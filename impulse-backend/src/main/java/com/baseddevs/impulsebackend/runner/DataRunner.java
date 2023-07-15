@@ -25,6 +25,11 @@ public class DataRunner implements CommandLineRunner {
     private final ProductRepository productRepository;
     private final ProductVariantRepository productVariantRepository;
     private final InventoryRepository inventoryRepository;
+    private final AddressRepository addressRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
+    private final PromoCodeRepository promoCodeRepository;
+    private final ShippingRepository shippingRepository;
 
     @Override
     @Transactional
@@ -56,12 +61,12 @@ public class DataRunner implements CommandLineRunner {
         // Save some permissions
         Permission permission1 = new Permission(1L, "read");
         Permission permission2 = new Permission(2L, "write");
-        permission1 = permissionRepository.save(permission1);
+        permissionRepository.save(permission1);
         permissionRepository.save(permission2);
 
         // Save a role
         Role role = new Role(1L, "admin", new HashSet<>());
-        role = roleRepository.save(role);
+        roleRepository.save(role);
 
         // Save a role permission
         RolePermission rolePermission = new RolePermission(1L, role, permission1);
@@ -74,5 +79,26 @@ public class DataRunner implements CommandLineRunner {
         // Save a user role
         UserRole userRole = new UserRole(1L, user, role);
         userRoleRepository.save(userRole);
+
+        // Save an address
+        Address address = new Address(1L, user, "123 Main St", "Anytown", "AnyState", "12345", "AnyCountry");
+        addressRepository.save(address);
+
+        // Save a promo code
+        PromoCode promoCode = new PromoCode(1L, "PROMO10", BigDecimal.valueOf(10.0), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(10)));
+        promoCodeRepository.save(promoCode);
+
+        // Save an order
+        Order order = new Order(1L, user, promoCode, Date.valueOf(LocalDate.now()), BigDecimal.valueOf(1999.99));
+        order = orderRepository.save(order);
+
+        // Save an order item
+        OrderItem orderItem = new OrderItem(1L, order, productVariant, 2, BigDecimal.valueOf(999.99));
+        orderItemRepository.save(orderItem);
+
+        // Save a shipping
+        Shipping shipping = new Shipping(1L, order, address, "FedEx", Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(3)));
+        shippingRepository.save(shipping);
+
     }
 }
