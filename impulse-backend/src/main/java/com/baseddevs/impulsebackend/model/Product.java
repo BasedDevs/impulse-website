@@ -2,15 +2,13 @@ package com.baseddevs.impulsebackend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products",
+        indexes = @Index(columnList = "name", name = "product_name_index"))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,4 +45,16 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
+    /*
+    @Builder
+    public static Product create(Category category, Gender gender, String name, String description, BigDecimal price) {
+        Product product = new Product();
+        product.category = category;
+        product.gender = gender;
+        product.name = name;
+        product.description = description;
+        product.price = price;
+        return product;
+    }
+*/
 }

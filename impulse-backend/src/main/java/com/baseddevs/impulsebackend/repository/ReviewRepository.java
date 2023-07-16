@@ -1,8 +1,8 @@
 package com.baseddevs.impulsebackend.repository;
 
-import com.baseddevs.impulsebackend.model.Address;
+import com.baseddevs.impulsebackend.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface AddressRepository extends JpaRepository<Address, Long>, JpaSpecificationExecutor<Address> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, JpaSpecificationExecutor<Review> {
 }
