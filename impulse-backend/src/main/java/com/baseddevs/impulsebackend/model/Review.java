@@ -1,6 +1,8 @@
 package com.baseddevs.impulsebackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -8,14 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Entity
-@Table(name = "product_variants",
-        indexes = @Index(columnList = "size", name = "product_size_index"))
+@Table(name = "reviews")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductVariant {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +30,21 @@ public class ProductVariant {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Size(max=50, message = "Size must be maximum 50 characters")
-    @Column(name = "size")
-    public String size;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Size(max=50, message = "Color must be maximum 50 characters")
-    @Column(name = "color")
-    public String color;
+    @Min(1)
+    @Max(5)
+    @Column(name = "rating")
+    private Integer rating;
+
+    @Size(max = 500, message = "Comment must be maximum 500 characters")
+    @Column(name = "comment")
+    private String comment;
+
+    @NotNull(message = "Review date cannot be null")
+    @Column(name = "review_date")
+    private Date reviewDate;
 
 }

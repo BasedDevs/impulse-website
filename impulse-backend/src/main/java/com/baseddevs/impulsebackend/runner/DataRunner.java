@@ -30,6 +30,7 @@ public class DataRunner implements CommandLineRunner {
     private final OrderRepository orderRepository;
     private final PromoCodeRepository promoCodeRepository;
     private final ShippingRepository shippingRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     @Transactional
@@ -73,7 +74,7 @@ public class DataRunner implements CommandLineRunner {
         rolePermissionRepository.save(rolePermission);
 
         // Save a user
-        User user = new User(1L, "user1", "user1@example.com", "hashedPassword", "John", "Doe", Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()));
+        User user = new User(1L, "user1", "user1@example.com", "hashedPassword", "John", "Doe", currentDate(), currentDate());
         userRepository.save(user);
 
         // Save a user role
@@ -85,11 +86,11 @@ public class DataRunner implements CommandLineRunner {
         addressRepository.save(address);
 
         // Save a promo code
-        PromoCode promoCode = new PromoCode(1L, "PROMO10", BigDecimal.valueOf(10.0), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(10)));
+        PromoCode promoCode = new PromoCode(1L, "PROMO10", BigDecimal.valueOf(10.0), currentDate(), Date.valueOf(LocalDate.now().plusDays(10)));
         promoCodeRepository.save(promoCode);
 
         // Save an order
-        Order order = new Order(1L, user, promoCode, Date.valueOf(LocalDate.now()), BigDecimal.valueOf(1999.99));
+        Order order = new Order(1L, user, promoCode, currentDate(), BigDecimal.valueOf(1999.99));
         order = orderRepository.save(order);
 
         // Save an order item
@@ -97,8 +98,23 @@ public class DataRunner implements CommandLineRunner {
         orderItemRepository.save(orderItem);
 
         // Save a shipping
-        Shipping shipping = new Shipping(1L, order, address, "FedEx", Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(3)));
+        Shipping shipping = new Shipping(1L, order, address, "FedEx", currentDate(), Date.valueOf(LocalDate.now().plusDays(3)));
         shippingRepository.save(shipping);
 
+        // Create a new review
+        Review review1 = new Review();
+        review1.setProduct(product);
+        review1.setUser(user);
+        review1.setRating(5);
+        review1.setComment("Great product!");
+        review1.setReviewDate(currentDate());
+
+        // Save the review
+        reviewRepository.save(review1);
     }
+
+    public static Date currentDate(){
+        return Date.valueOf(LocalDate.now());
+    }
+
 }
