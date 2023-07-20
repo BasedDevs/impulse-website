@@ -3,6 +3,7 @@ package com.baseddevs.userservice.security.config;
 import com.baseddevs.userservice.security.filter.JWTAuthenticationFilter;
 import com.baseddevs.userservice.security.filter.JWTAuthorizationFilter;
 import com.baseddevs.userservice.security.utils.JwtUtils;
+import com.baseddevs.userservice.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -24,9 +24,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @AllArgsConstructor
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,7 +48,7 @@ public class SecurityConfig {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(new JWTAuthenticationFilter(jwtUtils, authenticationManager), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTAuthenticationFilter(jwtUtils, authenticationManager, refreshTokenService), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new JWTAuthorizationFilter(jwtUtils), JWTAuthenticationFilter.class);
 
         return http.build();

@@ -8,7 +8,7 @@ import com.baseddevs.userservice.model.User;
 
 public interface RefreshTokenService {
 
-    RefreshToken createRefreshToken(User user);
+    RefreshToken createRefreshToken(String username);
 
     AuthenticationResponseDTO refreshToken(String refreshToken);
 }
