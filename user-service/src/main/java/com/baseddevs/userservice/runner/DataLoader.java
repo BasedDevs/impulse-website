@@ -88,7 +88,7 @@ public class DataLoader {
 
             UserRole userRole2 = new UserRole();
             userRole2.setUser(user2);
-            userRole2.setRole(adminRole);
+            userRole2.setRole(userRole);
 
             userRoleRepository.save(userRole2);
 

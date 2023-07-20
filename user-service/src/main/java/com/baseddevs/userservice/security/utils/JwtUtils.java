@@ -1,11 +1,12 @@
 package com.baseddevs.userservice.security.utils;
 
 import com.baseddevs.userservice.security.model.SecurityUser;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -66,11 +69,26 @@ public class JwtUtils {
     }
 
     public boolean validateJwtToken(String authToken) {
-        Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(authToken);
-        return true;
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(authToken);
+            return true;
+        } catch (ExpiredJwtException ex) {
+            // Log the exception message or do something specific for expired tokens
+            LOGGER.error(ex.getMessage());
+        } catch (SignatureException ex) {
+            // Log the exception message or do something specific for signature validation failures
+            LOGGER.error(ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            // Log the exception message or do something specific for malformed tokens
+            LOGGER.error(ex.getMessage());
+        } catch (JwtException ex) {
+            // Catch all other JwtException types
+            LOGGER.error(ex.getMessage());
+        }
+        return false;
     }
 
     private SecretKey getSigningKey() {

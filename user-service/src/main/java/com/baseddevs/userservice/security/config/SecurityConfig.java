@@ -38,9 +38,15 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         new AntPathRequestMatcher("/h2-console/**"),
-                        new AntPathRequestMatcher("/auth/login"),
                         new AntPathRequestMatcher("/auth/confirm-account/**"),
-                        new AntPathRequestMatcher("/users/register")).permitAll()
+                        new AntPathRequestMatcher("/api/users/register"),
+                        new AntPathRequestMatcher("/api/refreshToken"))
+                .permitAll()
+                .requestMatchers(
+                        new AntPathRequestMatcher("/api/permissions/**"),
+                        new AntPathRequestMatcher("/api/roles/**"),
+                        new AntPathRequestMatcher("/api/users/**")
+                ).hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
 
@@ -48,8 +54,9 @@ public class SecurityConfig {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(new JWTAuthenticationFilter(jwtUtils, authenticationManager, refreshTokenService), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JWTAuthorizationFilter(jwtUtils), JWTAuthenticationFilter.class);
+        http
+                .addFilterBefore(new JWTAuthenticationFilter(jwtUtils, authenticationManager, refreshTokenService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTAuthorizationFilter(jwtUtils), JWTAuthenticationFilter.class);
 
         return http.build();
     }
