@@ -1,8 +1,7 @@
 package com.baseddevs.userservice.security.model;
 
-import com.baseddevs.userservice.model.User;
+import com.baseddevs.userservice.security.dto.UserAuthDetails;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,16 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-@Getter
-public class SecurityUser implements UserDetails {
-
-    private final User user;
+public record SecurityUser(UserAuthDetails user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getUserRoles().stream()
-                .map(userRole -> new SimpleGrantedAuthority(userRole.getRole().getName()))
+        return user.getRoles().stream()
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

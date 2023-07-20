@@ -2,7 +2,6 @@ package com.baseddevs.userservice.service.impl;
 
 import com.baseddevs.userservice.dto.auth.AuthenticationResponseDTO;
 import com.baseddevs.userservice.model.RefreshToken;
-import com.baseddevs.userservice.model.User;
 import com.baseddevs.userservice.repository.RefreshTokenRepository;
 import com.baseddevs.userservice.security.utils.JwtUtils;
 import com.baseddevs.userservice.service.RefreshTokenService;
@@ -26,12 +25,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final JwtUtils jwtUtils;
 
     @Override
-    public RefreshToken createRefreshToken(User user) {
+    public RefreshToken createRefreshToken(String username) {
         String refreshToken = UUID.randomUUID().toString(); // Simple token generation, consider using a more secure method
 
         RefreshToken newRefreshToken = new RefreshToken();
         newRefreshToken.setToken(refreshToken);
-        newRefreshToken.setUser(user);
+        newRefreshToken.setUsername(username);
         newRefreshToken.setExpiryDate(Instant.now().plus(7, ChronoUnit.DAYS)); // Token valid for 7 days, adjust as needed
 
         return refreshTokenRepository.save(newRefreshToken);
@@ -43,7 +42,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token"));
 
         if (token.getExpiryDate().isAfter(Instant.now())) {
-            Authentication auth = new UsernamePasswordAuthenticationToken(token.getUser().getUsername(), null, new ArrayList<>());
+            Authentication auth = new UsernamePasswordAuthenticationToken(token.getUsername(), null, new ArrayList<>());
             String jwt = jwtUtils.generateJwtToken(auth);
             return new AuthenticationResponseDTO(jwt, refreshToken); // Optionally generate a new refresh token here
         } else {
