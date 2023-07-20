@@ -1,5 +1,6 @@
 package com.baseddevs.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,6 +30,7 @@ public class Role {
     @Column(name = "name")
     private String name;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "role")
     private Set<RolePermission> rolePermissions = new HashSet<>();
 

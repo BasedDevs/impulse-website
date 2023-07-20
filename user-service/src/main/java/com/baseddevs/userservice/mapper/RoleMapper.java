@@ -2,6 +2,7 @@ package com.baseddevs.userservice.mapper;
 
 import com.baseddevs.userservice.dto.permission.PermissionDTO;
 import com.baseddevs.userservice.dto.role.RoleDTO;
+import com.baseddevs.userservice.dto.user.RolePermissionDTO;
 import com.baseddevs.userservice.model.Permission;
 import com.baseddevs.userservice.model.Role;
 import com.baseddevs.userservice.model.RolePermission;
@@ -25,12 +26,23 @@ public class RoleMapper {
         return new RoleDTO(role.getId(), role.getName(), permissions);
     }
 
-    public Role toEntity(RoleDTO roleDTO) {
-        Set<RolePermission> rolePermissions = roleDTO.permissions().stream()
-                .map(permissionMapper::toEntity)
-                .map(permission -> new RolePermission(null, null, permission))
-                .collect(Collectors.toSet());
-        return new Role(roleDTO.id(), roleDTO.name(), rolePermissions);
-    }
 
+    public Role toEntity(RoleDTO dto) {
+        Role role = new Role();
+        role.setId(dto.id());
+        role.setName(dto.name());
+
+        Set<RolePermission> rolePermissions = dto.permissions().stream()
+                .map(permissionDTO -> {
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.setRole(role);
+                    rolePermission.setPermission(permissionMapper.toEntity(permissionDTO));
+                    return rolePermission;
+                })
+                .collect(Collectors.toSet());
+
+        role.setRolePermissions(rolePermissions);
+
+        return role;
+    }
 }

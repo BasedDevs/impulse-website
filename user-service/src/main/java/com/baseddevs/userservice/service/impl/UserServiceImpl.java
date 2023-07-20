@@ -3,15 +3,16 @@ package com.baseddevs.userservice.service.impl;
 import com.baseddevs.userservice.dto.role.RoleDTO;
 import com.baseddevs.userservice.dto.user.UserCU;
 import com.baseddevs.userservice.dto.user.UserDTO;
+import com.baseddevs.userservice.dto.user.UserRoleDTO;
+import com.baseddevs.userservice.dto.user.UserUpdatePasswordDTO;
 import com.baseddevs.userservice.exception.EmailAlreadyUsedException;
 import com.baseddevs.userservice.exception.UserNotFoundException;
 import com.baseddevs.userservice.exception.UsernameAlreadyTakenException;
-import com.baseddevs.userservice.mapper.RoleMapper;
 import com.baseddevs.userservice.mapper.UserMapper;
+import com.baseddevs.userservice.mapper.UserRoleMapper;
 import com.baseddevs.userservice.model.Role;
 import com.baseddevs.userservice.model.User;
 import com.baseddevs.userservice.model.UserRole;
-import com.baseddevs.userservice.repository.PermissionRepository;
 import com.baseddevs.userservice.repository.RoleRepository;
 import com.baseddevs.userservice.repository.UserRepository;
 import com.baseddevs.userservice.repository.UserRoleRepository;
@@ -36,11 +37,10 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
 
     private final UserMapper userMapper;
-    private final RoleMapper roleMapper;
 
     private final UserRoleRepository userRoleRepository;
     private final RoleRepository roleRepository;
-    private final PermissionRepository permissionRepository;
+    private final UserRoleMapper userRoleMapper;
 
     @Override
     public UserDTO createUser(UserCU userCU) {
@@ -109,6 +109,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDTO findByUsername(String username) {
+        return userMapper.toDTO(userRepository.findByUsername(username).orElseThrow(() ->
+                new UserNotFoundException("User with username " + username + " not found")));
+    }
+
+    @Override
+    public List<UserRoleDTO> getUserRolesByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UserNotFoundException("User with username " + username + " not found"));
+        return userRoleRepository.findAllByUser(user).stream().map(userRoleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        return userMapper.toDTO(userRepository.findByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User with email " + email + " not found")));
+    }
+
+    @Override
+    public void updateUser(UserUpdatePasswordDTO userUpdatePasswordDTO) {
+        User user = userRepository.findById(userUpdatePasswordDTO.id()).orElseThrow(() ->
+                new UserNotFoundException("User with id " + userUpdatePasswordDTO.id() + " not found"));
+
+        user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.newPassword()));
+        userRepository.save(user);
     }
 
     private Set<UserRole> getUserRoles(User user, Set<RoleDTO> roles) {

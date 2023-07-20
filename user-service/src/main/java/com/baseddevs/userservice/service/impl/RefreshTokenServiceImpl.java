@@ -1,6 +1,7 @@
 package com.baseddevs.userservice.service.impl;
 
 import com.baseddevs.userservice.dto.auth.AuthenticationResponseDTO;
+import com.baseddevs.userservice.exception.TokenNotFoundException;
 import com.baseddevs.userservice.model.RefreshToken;
 import com.baseddevs.userservice.repository.RefreshTokenRepository;
 import com.baseddevs.userservice.security.utils.JwtUtils;
@@ -49,5 +50,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             refreshTokenRepository.delete(token);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expired");
         }
+    }
+
+    @Override
+    public void invalidateRefreshToken(String token) {
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
+                .orElseThrow(() -> new TokenNotFoundException("Refresh Token not found!"));
+
+        refreshTokenRepository.delete(refreshToken);
     }
 }

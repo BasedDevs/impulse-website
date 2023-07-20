@@ -11,8 +11,12 @@ public class PermissionMapper {
         return new PermissionDTO(permission.getId(), permission.getName());
     }
 
-    public Permission toEntity(PermissionDTO permissionDTO) {
-        return new Permission(permissionDTO.id(), permissionDTO.name());
+    public static Permission toEntity(PermissionDTO dto) {
+        Permission permission = new Permission();
+        permission.setId(dto.id());
+        permission.setName(dto.name());
+
+        return permission;
     }
 
 }

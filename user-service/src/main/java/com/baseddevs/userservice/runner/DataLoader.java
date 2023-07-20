@@ -64,7 +64,7 @@ public class DataLoader {
             // Create users
             User user1 = new User();
             user1.setUsername("admin");
-            user1.setEmail("admin@admin.com");
+            user1.setEmail("prica.o.sam@gmail.com");
             user1.setPassword(passwordEncoder.encode("admin"));
             user1.setFirstName("Admin");
             user1.setLastName("Admin");

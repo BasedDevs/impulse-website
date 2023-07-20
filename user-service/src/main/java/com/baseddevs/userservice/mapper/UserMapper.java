@@ -3,6 +3,7 @@ package com.baseddevs.userservice.mapper;
 import com.baseddevs.userservice.dto.role.RoleDTO;
 import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.model.User;
+import com.baseddevs.userservice.model.UserRole;
 import com.baseddevs.userservice.security.dto.UserAuthDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     private final RoleMapper roleMapper;
+    private final UserRoleMapper userRoleMapper;
 
     public UserDTO toDTO(User user) {
         Set<RoleDTO> roles = user.getUserRoles().stream()
@@ -37,5 +39,29 @@ public class UserMapper {
                 user.isCredentialsNonExpired(),
                 user.isEnabled(),
                 roleNames);
+    }
+
+    public User toEntity(UserDTO dto) {
+        User user = new User();
+        user.setId(dto.id());
+        user.setUsername(dto.username());
+        user.setEmail(dto.email());
+        user.setFirstName(dto.firstName());
+        user.setLastName(dto.lastName());
+
+        Set<UserRole> userRoles = dto.roles().stream()
+                .map(roleDTO -> {
+                    UserRole userRole = new UserRole();
+                    userRole.setUser(user);
+                    userRole.setRole(roleMapper.toEntity(roleDTO));
+                    return userRole;
+                })
+                .collect(Collectors.toSet());
+
+        user.setUserRoles(userRoles);
+
+        // Please set password and confirmationToken according to your application need
+
+        return user;
     }
 }

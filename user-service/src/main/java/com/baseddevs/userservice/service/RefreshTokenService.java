@@ -11,4 +11,6 @@ public interface RefreshTokenService {
     RefreshToken createRefreshToken(String username);
 
     AuthenticationResponseDTO refreshToken(String refreshToken);
+
+    void invalidateRefreshToken(String refreshToken);
 }
