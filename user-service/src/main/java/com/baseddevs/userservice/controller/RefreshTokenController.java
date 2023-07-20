@@ -16,13 +16,13 @@ import java.time.Instant;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/refreshToken")
+@RequestMapping("/api/refreshToken")
 @AllArgsConstructor
 public class RefreshTokenController {
 
     private final RefreshTokenService refreshTokenService;
 
-    @PostMapping("/refresh")
+    @PostMapping
     public ResponseEntity<AuthenticationResponseDTO> refreshToken(@RequestParam String refreshToken) {
         AuthenticationResponseDTO responseDTO = refreshTokenService.refreshToken(refreshToken);
         return ResponseEntity.ok(responseDTO);
