@@ -2,10 +2,17 @@ package com.baseddevs.userservice.dto.permission;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record PermissionCU(
-        @NotBlank(message = "Permission name cannot be blank/null")
-        @Size(min = 1, max = 100, message = "Permission name must be between 1 and 100 characters")
-        String name
-) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PermissionCU {
+    @NotBlank(message = "Permission name cannot be blank/null")
+    @Size(min = 1, max = 100, message = "Permission name must be between 1 and 100 characters")
+    private String name;
 }

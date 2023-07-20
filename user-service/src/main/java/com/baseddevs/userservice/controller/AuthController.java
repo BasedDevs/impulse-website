@@ -1,13 +1,11 @@
 package com.baseddevs.userservice.controller;
 
-import com.baseddevs.userservice.dto.auth.ConfirmedAccountResponseDTO;
-import com.baseddevs.userservice.dto.auth.PasswordResetRequest;
-import com.baseddevs.userservice.dto.auth.PasswordResetResponse;
-import com.baseddevs.userservice.dto.auth.PasswordResetTokenDTO;
-import com.baseddevs.userservice.dto.user.UserDTO;
+import com.baseddevs.userservice.dto.auth.*;
+import com.baseddevs.userservice.dto.passwordReset.NewPasswordRequest;
+import com.baseddevs.userservice.dto.passwordReset.PasswordResetRequest;
+import com.baseddevs.userservice.dto.passwordReset.PasswordResetResponse;
 import com.baseddevs.userservice.service.AuthService;
 import com.baseddevs.userservice.service.PasswordResetService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +25,14 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        String refreshToken = request.getHeader("Refresh-Token");
-        // Invalidate the token
-        authService.logout(refreshToken);
+    public ResponseEntity<?> logout(@RequestBody LogoutRequest logoutRequest) {
+        authService.logout(logoutRequest.getRefreshToken());
         return ResponseEntity.ok("Logout Successful");
     }
 
     @PostMapping("/password/reset/request")
-    public ResponseEntity<?> requestPasswordReset(@RequestParam("email") String email) {
-        passwordResetService.passwordResetRequest(email);
+    public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest passwordResetRequest) {
+        passwordResetService.passwordResetRequest(passwordResetRequest.getEmail());
         return ResponseEntity.ok("Password reset request sent!");
     }
 
@@ -46,8 +42,8 @@ public class AuthController {
     }
 
     @PutMapping("/password/reset")
-    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest passwordResetRequest) {
-        return new ResponseEntity<>(passwordResetService.resetPassword(passwordResetRequest), HttpStatus.OK);
+    public ResponseEntity<?> resetPassword(@RequestBody NewPasswordRequest newPasswordRequest) {
+        return new ResponseEntity<>(passwordResetService.resetPassword(newPasswordRequest), HttpStatus.OK);
     }
 
 }

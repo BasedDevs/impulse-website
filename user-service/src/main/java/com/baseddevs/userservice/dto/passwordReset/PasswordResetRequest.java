@@ -1,4 +1,4 @@
-package com.baseddevs.userservice.dto.user;
+package com.baseddevs.userservice.dto.passwordReset;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdatePasswordDTO {
-    private Long id;
-
-    @NotBlank(message = "Password cannot be empty.")
-    private String newPassword;
+public class PasswordResetRequest {
+    @NotBlank(message = "Email cannot be empty.")
+    private String email;
 }

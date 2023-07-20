@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     private final RoleMapper roleMapper;
-    private final UserRoleMapper userRoleMapper;
 
     public UserDTO toDTO(User user) {
         Set<RoleDTO> roles = user.getUserRoles().stream()
@@ -43,13 +42,13 @@ public class UserMapper {
 
     public User toEntity(UserDTO dto) {
         User user = new User();
-        user.setId(dto.id());
-        user.setUsername(dto.username());
-        user.setEmail(dto.email());
-        user.setFirstName(dto.firstName());
-        user.setLastName(dto.lastName());
+        user.setId(dto.getId());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
 
-        Set<UserRole> userRoles = dto.roles().stream()
+        Set<UserRole> userRoles = dto.getRoles().stream()
                 .map(roleDTO -> {
                     UserRole userRole = new UserRole();
                     userRole.setUser(user);
@@ -59,8 +58,6 @@ public class UserMapper {
                 .collect(Collectors.toSet());
 
         user.setUserRoles(userRoles);
-
-        // Please set password and confirmationToken according to your application need
 
         return user;
     }

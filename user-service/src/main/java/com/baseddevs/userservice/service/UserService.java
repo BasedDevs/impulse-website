@@ -4,7 +4,6 @@ import com.baseddevs.userservice.dto.user.UserCU;
 import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.dto.user.UserRoleDTO;
 import com.baseddevs.userservice.dto.user.UserUpdatePasswordDTO;
-import com.baseddevs.userservice.model.UserRole;
 
 import java.util.List;
 

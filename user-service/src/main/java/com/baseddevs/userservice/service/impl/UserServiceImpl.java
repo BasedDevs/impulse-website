@@ -45,29 +45,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserCU userCU) {
         // Check if the username is already taken
-        if (userRepository.existsByUsername(userCU.username())) {
-            throw new UsernameAlreadyTakenException("The username " + userCU.username() + " is already taken");
+        if (userRepository.existsByUsername(userCU.getUsername())) {
+            throw new UsernameAlreadyTakenException("The username " + userCU.getUsername() + " is already taken");
         }
         // Check if the email is already used
-        if (userRepository.existsByEmail(userCU.email())) {
-            throw new EmailAlreadyUsedException("The email " + userCU.email() + " is already used");
+        if (userRepository.existsByEmail(userCU.getEmail())) {
+            throw new EmailAlreadyUsedException("The email " + userCU.getEmail() + " is already used");
         }
         // Create new User entity
         User user = new User();
         // Hash the password
-        user.setPassword(passwordEncoder.encode(userCU.password()));
+        user.setPassword(passwordEncoder.encode(userCU.getPassword()));
 
         // Set user-sent data
-        user.setEmail(userCU.email());
-        user.setUsername(userCU.username());
-        user.setFirstName(userCU.firstName());
-        user.setLastName(userCU.lastName());
+        user.setEmail(userCU.getEmail());
+        user.setUsername(userCU.getUsername());
+        user.setFirstName(userCU.getFirstName());
+        user.setLastName(userCU.getLastName());
 
         // Generate a confirmation token
         user.setConfirmationToken(UUID.randomUUID().toString());
 
         User savedUser = userRepository.save(user);
-        Set<UserRole> userRoles = getUserRoles(savedUser, userCU.roles());
+        Set<UserRole> userRoles = getUserRoles(savedUser, userCU.getRoles());
         savedUser.setUserRoles(userRoles);
 
         // Send a confirmation email
@@ -93,10 +93,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id" + id + " not found"));
 
-        user.setUsername(userCU.username());
-        user.setFirstName(userCU.firstName());
-        user.setLastName(userCU.lastName());
-        user.setEmail(userCU.email());
+        user.setUsername(userCU.getUsername());
+        user.setFirstName(userCU.getFirstName());
+        user.setLastName(userCU.getLastName());
+        user.setEmail(userCU.getEmail());
 
         // Handle password and roles update logic as well
         // ...
@@ -132,17 +132,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserUpdatePasswordDTO userUpdatePasswordDTO) {
-        User user = userRepository.findById(userUpdatePasswordDTO.id()).orElseThrow(() ->
-                new UserNotFoundException("User with id " + userUpdatePasswordDTO.id() + " not found"));
+        User user = userRepository.findById(userUpdatePasswordDTO.getId()).orElseThrow(() ->
+                new UserNotFoundException("User with id " + userUpdatePasswordDTO.getId() + " not found"));
 
-        user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.newPassword()));
+        user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getNewPassword()));
         userRepository.save(user);
     }
 
     private Set<UserRole> getUserRoles(User user, Set<RoleDTO> roles) {
         Set<UserRole> userRoles;
         userRoles = roles.stream().map(roleDTO -> {
-                    Role role = roleRepository.findByName(roleDTO.name()).orElseThrow();
+                    Role role = roleRepository.findByName(roleDTO.getName()).orElseThrow();
                     UserRole userRole = new UserRole();
                     userRole.setUser(user);
                     userRole.setRole(role);

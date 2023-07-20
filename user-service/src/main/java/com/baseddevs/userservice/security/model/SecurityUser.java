@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public record SecurityUser(UserAuthDetails user) implements UserDetails {
+@AllArgsConstructor
+public class SecurityUser implements UserDetails {
+
+    private final UserAuthDetails user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

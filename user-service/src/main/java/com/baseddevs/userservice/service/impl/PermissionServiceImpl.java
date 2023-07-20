@@ -24,12 +24,12 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public PermissionDTO createPermission(PermissionCU permissionCU) {
 
-        if (permissionRepository.existsByName(permissionCU.name())) {
-            throw new RoleAlreadyExistsException("Permission " + permissionCU.name() + " already exists");
+        if (permissionRepository.existsByName(permissionCU.getName())) {
+            throw new RoleAlreadyExistsException("Permission " + permissionCU.getName() + " already exists");
         }
 
         Permission permission = new Permission();
-        permission.setName(permissionCU.name());
+        permission.setName(permissionCU.getName());
         permission = permissionRepository.save(permission);
 
         return permissionMapper.toDTO(permission);
@@ -54,7 +54,7 @@ public class PermissionServiceImpl implements PermissionService {
     public PermissionDTO updatePermission(Long id, PermissionCU permissionCU) {
         Permission permission = permissionRepository.findById(id)
                 .orElseThrow(() -> new PermissionNotFoundException("Permission with id " + id + " not found"));
-        permission.setName(permissionCU.name());
+        permission.setName(permissionCU.getName());
         Permission updatedPermission = permissionRepository.save(permission);
         return permissionMapper.toDTO(updatedPermission);
     }

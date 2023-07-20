@@ -24,12 +24,12 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleDTO createRole(RoleCU roleCU) {
 
-        if (roleRepository.existsByName(roleCU.name())) {
-            throw new RoleAlreadyExistsException("Role " + roleCU.name() + " already exists");
+        if (roleRepository.existsByName(roleCU.getName())) {
+            throw new RoleAlreadyExistsException("Role " + roleCU.getName() + " already exists");
         }
 
         Role role = new Role();
-        role.setName(roleCU.name());
+        role.setName(roleCU.getName());
         role = roleRepository.save(role);
 
         return roleMapper.toDTO(role);
@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDTO updateRole(Long id, RoleCU roleCU) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new RoleNotFoundException("Role with id " + id + " not found"));
-        role.setName(roleCU.name());
+        role.setName(roleCU.getName());
         Role updatedRole = roleRepository.save(role);
         return roleMapper.toDTO(updatedRole);
     }

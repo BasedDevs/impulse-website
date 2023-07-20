@@ -1,7 +1,6 @@
 package com.baseddevs.userservice.mapper;
 
 import com.baseddevs.userservice.dto.role.RoleDTO;
-import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.dto.user.UserRoleDTO;
 import com.baseddevs.userservice.model.Role;
 import com.baseddevs.userservice.model.User;
@@ -22,7 +21,7 @@ public class UserRoleMapper {
     }
 
     public UserRole toEntity(UserRoleDTO userRoleDTO, User user, Role role) {
-        return new UserRole(userRoleDTO.id(), user, role);
+        return new UserRole(userRoleDTO.getId(), user, role);
     }
 
 }

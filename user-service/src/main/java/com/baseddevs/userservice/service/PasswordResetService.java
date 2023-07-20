@@ -1,12 +1,12 @@
 package com.baseddevs.userservice.service;
 
-import com.baseddevs.userservice.dto.auth.PasswordResetRequest;
-import com.baseddevs.userservice.dto.auth.PasswordResetResponse;
+import com.baseddevs.userservice.dto.passwordReset.NewPasswordRequest;
+import com.baseddevs.userservice.dto.passwordReset.PasswordResetResponse;
 import com.baseddevs.userservice.dto.user.UserDTO;
 
 public interface PasswordResetService {
 
-    UserDTO resetPassword(PasswordResetRequest passwordResetRequest);
+    UserDTO resetPassword(NewPasswordRequest newPasswordRequest);
 
     void passwordResetRequest(String email);
 

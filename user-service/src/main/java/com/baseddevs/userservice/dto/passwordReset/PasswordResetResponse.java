@@ -1,4 +1,4 @@
-package com.baseddevs.userservice.dto.auth;
+package com.baseddevs.userservice.dto.passwordReset;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LogoutRequest {
-    private String refreshToken;
+public class PasswordResetResponse {
+    private String message;
 }

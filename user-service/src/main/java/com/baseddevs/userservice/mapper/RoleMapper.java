@@ -29,10 +29,10 @@ public class RoleMapper {
 
     public Role toEntity(RoleDTO dto) {
         Role role = new Role();
-        role.setId(dto.id());
-        role.setName(dto.name());
+        role.setId(dto.getId());
+        role.setName(dto.getName());
 
-        Set<RolePermission> rolePermissions = dto.permissions().stream()
+        Set<RolePermission> rolePermissions = dto.getPermissions().stream()
                 .map(permissionDTO -> {
                     RolePermission rolePermission = new RolePermission();
                     rolePermission.setRole(role);

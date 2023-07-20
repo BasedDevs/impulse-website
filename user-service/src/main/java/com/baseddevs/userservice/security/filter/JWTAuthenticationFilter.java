@@ -3,11 +3,9 @@ package com.baseddevs.userservice.security.filter;
 import com.baseddevs.userservice.dto.auth.AuthenticationResponseDTO;
 import com.baseddevs.userservice.dto.auth.LoginRequest;
 import com.baseddevs.userservice.model.RefreshToken;
-import com.baseddevs.userservice.model.User;
 import com.baseddevs.userservice.security.model.SecurityUser;
 import com.baseddevs.userservice.security.utils.JwtUtils;
 import com.baseddevs.userservice.service.RefreshTokenService;
-import com.baseddevs.userservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,8 +39,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.username(),
-                            loginRequest.password()
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
                     )
             );
         } catch (IOException e) {

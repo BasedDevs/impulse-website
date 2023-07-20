@@ -1,7 +1,7 @@
 package com.baseddevs.userservice.service.impl;
 
-import com.baseddevs.userservice.dto.auth.PasswordResetRequest;
-import com.baseddevs.userservice.dto.auth.PasswordResetResponse;
+import com.baseddevs.userservice.dto.passwordReset.NewPasswordRequest;
+import com.baseddevs.userservice.dto.passwordReset.PasswordResetResponse;
 import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.dto.user.UserUpdatePasswordDTO;
 import com.baseddevs.userservice.exception.TokenExpiredException;
@@ -16,7 +16,6 @@ import com.baseddevs.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -38,21 +37,25 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         this.emailService = emailService;
     }
 
-    public UserDTO resetPassword(PasswordResetRequest passwordResetRequest) {
-        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(passwordResetRequest.token())
-                .orElseThrow(() -> new TokenNotFoundException("Token Not Found for token: " + passwordResetRequest.token()));
+    public UserDTO resetPassword(NewPasswordRequest newPasswordRequest) {
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(newPasswordRequest.getToken())
+                .orElseThrow(() -> new TokenNotFoundException("Token Not Found for token: " + newPasswordRequest.getToken()));
 
-        if (passwordResetToken.hasExpired()) {
+        if (hasExpired(passwordResetToken)) {
             throw new TokenExpiredException("Token Expired");
         }
 
         User user = passwordResetToken.getUser();
-        UserUpdatePasswordDTO userUpdatePasswordDTO = new UserUpdatePasswordDTO(user.getId(), passwordResetRequest.newPassword());
+        UserUpdatePasswordDTO userUpdatePasswordDTO = new UserUpdatePasswordDTO(user.getId(), newPasswordRequest.getNewPassword());
         userService.updateUser(userUpdatePasswordDTO);
 
         // Invalidate the reset token
         delete(passwordResetToken);
         return userMapper.toDTO(user);
+    }
+
+    private boolean hasExpired(PasswordResetToken passwordResetToken) {
+        return passwordResetToken.getExpiryDate().isBefore(Instant.now());
     }
 
     private void delete(PasswordResetToken passwordResetToken) {
@@ -73,7 +76,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
 
         passwordResetTokenRepository.save(passwordResetToken);
 
-        emailService.sendPasswordResetEmail(email, passwordResetToken.getToken(), userDTO.username());
+        emailService.sendPasswordResetEmail(email, passwordResetToken.getToken(), userDTO.getUsername());
     }
 
     @Override
@@ -81,7 +84,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(resetToken)
                 .orElseThrow(() -> new TokenNotFoundException("Token Not Found for token: " + resetToken));
 
-        if (passwordResetToken.hasExpired()) {
+        if (hasExpired(passwordResetToken)) {
             throw new TokenExpiredException("Token Expired");
         }
 

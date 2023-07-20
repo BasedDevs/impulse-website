@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "password_reset_tokens")
@@ -32,8 +30,4 @@ public class PasswordResetToken {
     @Column(name = "expiry_date")
     private Instant expiryDate;
 
-    // Method to check if the token has expired
-    public boolean hasExpired() {
-        return expiryDate.isBefore(Instant.now());
-    }
 }

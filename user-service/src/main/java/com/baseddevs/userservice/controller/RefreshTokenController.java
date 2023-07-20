@@ -1,19 +1,13 @@
 package com.baseddevs.userservice.controller;
 
 import com.baseddevs.userservice.dto.auth.AuthenticationResponseDTO;
-import com.baseddevs.userservice.dto.auth.ConfirmedAccountResponseDTO;
-import com.baseddevs.userservice.dto.auth.LoginRequest;
-import com.baseddevs.userservice.model.RefreshToken;
-import com.baseddevs.userservice.service.AuthService;
 import com.baseddevs.userservice.service.RefreshTokenService;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/refreshToken")

@@ -1,7 +1,17 @@
 package com.baseddevs.userservice.dto.user;
 
 import com.baseddevs.userservice.dto.role.RoleDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record UserRoleDTO(Long id, Long userId, RoleDTO roleDTO) {
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserRoleDTO {
+    private Long id;
+    private Long userId;
+    private RoleDTO roleDTO;
 }

@@ -1,7 +1,14 @@
 package com.baseddevs.userservice.dto.auth;
 
-public record ConfirmedAccountResponseDTO(
-        String response
-) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ConfirmedAccountResponseDTO {
+    private String response;
 }
