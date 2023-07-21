@@ -5,9 +5,7 @@ import com.baseddevs.userservice.dto.user.UserCU;
 import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.dto.user.UserRoleDTO;
 import com.baseddevs.userservice.dto.user.UserUpdatePasswordDTO;
-import com.baseddevs.userservice.exception.EmailAlreadyUsedException;
-import com.baseddevs.userservice.exception.UserNotFoundException;
-import com.baseddevs.userservice.exception.UsernameAlreadyTakenException;
+import com.baseddevs.userservice.exception.utils.ExceptionUtils;
 import com.baseddevs.userservice.mapper.UserMapper;
 import com.baseddevs.userservice.mapper.UserRoleMapper;
 import com.baseddevs.userservice.model.Role;
@@ -42,15 +40,17 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserRoleMapper userRoleMapper;
 
+    private final ExceptionUtils exceptionUtils;
+
     @Override
     public UserDTO createUser(UserCU userCU) {
         // Check if the username is already taken
         if (userRepository.existsByUsername(userCU.getUsername())) {
-            throw new UsernameAlreadyTakenException("The username " + userCU.getUsername() + " is already taken");
+            throw exceptionUtils.createResourceAlreadyExistsException("User", "username", userCU.getUsername());
         }
         // Check if the email is already used
         if (userRepository.existsByEmail(userCU.getEmail())) {
-            throw new EmailAlreadyUsedException("The email " + userCU.getEmail() + " is already used");
+            throw exceptionUtils.createResourceAlreadyExistsException("User", "email", userCU.getEmail());
         }
         // Create new User entity
         User user = new User();
@@ -84,22 +84,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserById(Long id) {
         return userMapper.toDTO(userRepository.findById(id).orElseThrow(() ->
-                new UserNotFoundException("User with id " + id + " not found")
+                exceptionUtils.createResourceNotFoundException("User", "id", id.toString())
         ));
     }
 
     @Override
     public UserDTO updateUser(Long id, UserCU userCU) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id" + id + " not found"));
+        User user = userRepository.findById(id).orElseThrow(() ->
+                exceptionUtils.createResourceNotFoundException("User", "id", id.toString())
+        );
 
         user.setUsername(userCU.getUsername());
         user.setFirstName(userCU.getFirstName());
         user.setLastName(userCU.getLastName());
         user.setEmail(userCU.getEmail());
-
-        // Handle password and roles update logic as well
-        // ...
 
         User updatedUser = userRepository.save(user);
 
@@ -114,26 +112,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByUsername(String username) {
         return userMapper.toDTO(userRepository.findByUsername(username).orElseThrow(() ->
-                new UserNotFoundException("User with username " + username + " not found")));
+                exceptionUtils.createResourceNotFoundException("User", "username", username)
+        ));
     }
 
     @Override
     public List<UserRoleDTO> getUserRolesByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new UserNotFoundException("User with username " + username + " not found"));
+                exceptionUtils.createResourceNotFoundException("User", "username", username)
+        );
         return userRoleRepository.findAllByUser(user).stream().map(userRoleMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO getUserByEmail(String email) {
         return userMapper.toDTO(userRepository.findByEmail(email).orElseThrow(() ->
-                new UserNotFoundException("User with email " + email + " not found")));
+                exceptionUtils.createResourceNotFoundException("User", "email", email)
+        ));
     }
 
     @Override
     public void updateUser(UserUpdatePasswordDTO userUpdatePasswordDTO) {
         User user = userRepository.findById(userUpdatePasswordDTO.getId()).orElseThrow(() ->
-                new UserNotFoundException("User with id " + userUpdatePasswordDTO.getId() + " not found"));
+                exceptionUtils.createResourceNotFoundException("User", "id", userUpdatePasswordDTO.getId().toString())
+        );
 
         user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getNewPassword()));
         userRepository.save(user);

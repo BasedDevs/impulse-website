@@ -4,12 +4,16 @@ import com.baseddevs.userservice.dto.auth.*;
 import com.baseddevs.userservice.dto.passwordReset.NewPasswordRequest;
 import com.baseddevs.userservice.dto.passwordReset.PasswordResetRequest;
 import com.baseddevs.userservice.dto.passwordReset.PasswordResetResponse;
+import com.baseddevs.userservice.dto.user.UserDTO;
+import com.baseddevs.userservice.exception.dto.ApiResponse;
 import com.baseddevs.userservice.service.AuthService;
 import com.baseddevs.userservice.service.PasswordResetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZonedDateTime;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,30 +24,38 @@ public class AuthController {
     private final PasswordResetService passwordResetService;
 
     @GetMapping("/confirm-account")
-    public ResponseEntity<ConfirmedAccountResponseDTO> confirmUserAccount(@RequestParam("token") String confirmationToken) {
-        return new ResponseEntity<>(authService.confirmUserAccount(confirmationToken), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<ConfirmedAccountResponseDTO>> confirmUserAccount(@RequestParam("token") String confirmationToken) {
+        ConfirmedAccountResponseDTO res = authService.confirmUserAccount(confirmationToken);
+        ApiResponse<ConfirmedAccountResponseDTO> response = new ApiResponse<>(ZonedDateTime.now(), "success", res);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody LogoutRequest logoutRequest) {
+    public ResponseEntity<ApiResponse<String>> logout(@RequestBody LogoutRequest logoutRequest) {
         authService.logout(logoutRequest.getRefreshToken());
-        return ResponseEntity.ok("Logout Successful");
+        ApiResponse<String> response = new ApiResponse<>(ZonedDateTime.now(), "success", "Logout successful");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/password/reset/request")
-    public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest passwordResetRequest) {
+    public ResponseEntity<ApiResponse<String>> requestPasswordReset(@RequestBody PasswordResetRequest passwordResetRequest) {
         passwordResetService.passwordResetRequest(passwordResetRequest.getEmail());
-        return ResponseEntity.ok("Password reset request sent!");
+        ApiResponse<String> response = new ApiResponse<>(ZonedDateTime.now(), "success", "Password reset request sent");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/password/reset")
-    public ResponseEntity<PasswordResetResponse> showPasswordResetForm(@RequestParam("token") String resetToken) {
-        return new ResponseEntity<>(passwordResetService.confirmPasswordResetRequest(resetToken), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<PasswordResetResponse>> showPasswordResetForm(@RequestParam("token") String resetToken) {
+        PasswordResetResponse res = passwordResetService.confirmPasswordResetRequest(resetToken);
+        ApiResponse<PasswordResetResponse> response = new ApiResponse<>(ZonedDateTime.now(), "success", res);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/password/reset")
-    public ResponseEntity<?> resetPassword(@RequestBody NewPasswordRequest newPasswordRequest) {
-        return new ResponseEntity<>(passwordResetService.resetPassword(newPasswordRequest), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<UserDTO>> resetPassword(@RequestBody NewPasswordRequest newPasswordRequest) {
+        UserDTO res = passwordResetService.resetPassword(newPasswordRequest);
+        ApiResponse<UserDTO> response = new ApiResponse<>(ZonedDateTime.now(), "success", res);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

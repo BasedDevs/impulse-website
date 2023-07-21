@@ -4,8 +4,7 @@ import com.baseddevs.userservice.dto.passwordReset.NewPasswordRequest;
 import com.baseddevs.userservice.dto.passwordReset.PasswordResetResponse;
 import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.dto.user.UserUpdatePasswordDTO;
-import com.baseddevs.userservice.exception.TokenExpiredException;
-import com.baseddevs.userservice.exception.TokenNotFoundException;
+import com.baseddevs.userservice.exception.utils.ExceptionUtils;
 import com.baseddevs.userservice.mapper.UserMapper;
 import com.baseddevs.userservice.model.PasswordResetToken;
 import com.baseddevs.userservice.model.User;
@@ -29,20 +28,23 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private final UserService userService;
     private final UserMapper userMapper;
     private final EmailService emailService;
+    private final ExceptionUtils exceptionUtils;
 
-    public PasswordResetServiceImpl(PasswordResetTokenRepository passwordResetTokenRepository, UserService userService, UserMapper userMapper, EmailService emailService) {
+    public PasswordResetServiceImpl(PasswordResetTokenRepository passwordResetTokenRepository, UserService userService, UserMapper userMapper, EmailService emailService, ExceptionUtils exceptionUtils) {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.userService = userService;
         this.userMapper = userMapper;
         this.emailService = emailService;
+        this.exceptionUtils = exceptionUtils;
     }
 
     public UserDTO resetPassword(NewPasswordRequest newPasswordRequest) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(newPasswordRequest.getToken())
-                .orElseThrow(() -> new TokenNotFoundException("Token Not Found for token: " + newPasswordRequest.getToken()));
+                .orElseThrow(() -> exceptionUtils.createResourceNotFoundException("User", "token", newPasswordRequest.getToken())
+                );
 
         if (hasExpired(passwordResetToken)) {
-            throw new TokenExpiredException("Token Expired");
+            throw exceptionUtils.createTokenExpiredException(newPasswordRequest.getToken());
         }
 
         User user = passwordResetToken.getUser();
@@ -82,10 +84,10 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     @Override
     public PasswordResetResponse confirmPasswordResetRequest(String resetToken) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(resetToken)
-                .orElseThrow(() -> new TokenNotFoundException("Token Not Found for token: " + resetToken));
+                .orElseThrow(() -> exceptionUtils.createResourceNotFoundException("User", "token", resetToken));
 
         if (hasExpired(passwordResetToken)) {
-            throw new TokenExpiredException("Token Expired");
+            throw exceptionUtils.createTokenExpiredException(resetToken);
         }
 
         return new PasswordResetResponse("Token Confirmed. Show password reset form.");
