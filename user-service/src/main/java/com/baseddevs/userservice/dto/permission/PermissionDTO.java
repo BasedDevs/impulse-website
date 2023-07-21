@@ -1,7 +1,15 @@
 package com.baseddevs.userservice.dto.permission;
 
-public record PermissionDTO(
-        Long id,
-        String name
-) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PermissionDTO {
+    private Long id;
+    private String name;
 }

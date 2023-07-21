@@ -2,16 +2,18 @@ package com.baseddevs.userservice.security.filter;
 
 import com.baseddevs.userservice.dto.auth.AuthenticationResponseDTO;
 import com.baseddevs.userservice.dto.auth.LoginRequest;
+import com.baseddevs.userservice.exception.dto.ApiResponse;
 import com.baseddevs.userservice.model.RefreshToken;
-import com.baseddevs.userservice.model.User;
 import com.baseddevs.userservice.security.model.SecurityUser;
 import com.baseddevs.userservice.security.utils.JwtUtils;
 import com.baseddevs.userservice.service.RefreshTokenService;
-import com.baseddevs.userservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.BadRequestException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -41,12 +44,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.username(),
-                            loginRequest.password()
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
                     )
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException("Invalid login request format.");
         }
     }
 
@@ -60,7 +63,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // Put JWT and refresh token in the response
         AuthenticationResponseDTO responseDTO = new AuthenticationResponseDTO(token, newRefreshToken.getToken());
-        String responseBody = new ObjectMapper().writeValueAsString(responseDTO);
+        ApiResponse<AuthenticationResponseDTO> response = new ApiResponse<>(ZonedDateTime.now(), "success", responseDTO);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String responseBody = mapper.writeValueAsString(response);
 
         res.getWriter().write(responseBody);
         res.getWriter().flush();

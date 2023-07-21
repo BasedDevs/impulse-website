@@ -1,7 +1,9 @@
 package com.baseddevs.userservice.security.config;
 
+import com.baseddevs.userservice.security.filter.ExceptionHandlingFilter;
 import com.baseddevs.userservice.security.filter.JWTAuthenticationFilter;
 import com.baseddevs.userservice.security.filter.JWTAuthorizationFilter;
+import com.baseddevs.userservice.security.filter.RestAuthenticationEntryPoint;
 import com.baseddevs.userservice.security.utils.JwtUtils;
 import com.baseddevs.userservice.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,7 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers(
                         new AntPathRequestMatcher("/h2-console/**"),
                         new AntPathRequestMatcher("/auth/confirm-account/**"),
+                        new AntPathRequestMatcher("/auth/password/reset/**"),
                         new AntPathRequestMatcher("/api/users/register"),
                         new AntPathRequestMatcher("/api/refreshToken"))
                 .permitAll()
@@ -50,11 +54,15 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         );
 
-        http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/403"));
+        http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+            httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/403");
+            httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(restAuthenticationEntryPoint);
+        });
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http
+                .addFilterBefore(new ExceptionHandlingFilter(), JWTAuthenticationFilter.class)
                 .addFilterBefore(new JWTAuthenticationFilter(jwtUtils, authenticationManager, refreshTokenService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTAuthorizationFilter(jwtUtils), JWTAuthenticationFilter.class);
 

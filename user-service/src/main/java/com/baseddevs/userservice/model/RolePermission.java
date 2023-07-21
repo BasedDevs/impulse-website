@@ -1,5 +1,6 @@
 package com.baseddevs.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class RolePermission {
     @Column(name = "id")
     private Long id;
 
+    @JsonBackReference
     @NotNull(message = "Role cannot be null")
     @ManyToOne
     @JoinColumn(name = "role_id")

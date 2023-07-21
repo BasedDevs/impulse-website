@@ -1,16 +1,15 @@
 package com.baseddevs.userservice.service.impl;
 
 import com.baseddevs.userservice.dto.auth.AuthenticationResponseDTO;
+import com.baseddevs.userservice.exception.utils.ExceptionUtils;
 import com.baseddevs.userservice.model.RefreshToken;
 import com.baseddevs.userservice.repository.RefreshTokenRepository;
 import com.baseddevs.userservice.security.utils.JwtUtils;
 import com.baseddevs.userservice.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -23,6 +22,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtils jwtUtils;
+    private final ExceptionUtils exceptionUtils;
 
     @Override
     public RefreshToken createRefreshToken(String username) {
@@ -39,7 +39,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public AuthenticationResponseDTO refreshToken(String refreshToken) {
         RefreshToken token = refreshTokenRepository.findByToken(refreshToken).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token"));
+                exceptionUtils.createResourceNotFoundException("RefreshToken", "token", refreshToken));
 
         if (token.getExpiryDate().isAfter(Instant.now())) {
             Authentication auth = new UsernamePasswordAuthenticationToken(token.getUsername(), null, new ArrayList<>());
@@ -47,7 +47,15 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             return new AuthenticationResponseDTO(jwt, refreshToken); // Optionally generate a new refresh token here
         } else {
             refreshTokenRepository.delete(token);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expired");
+            throw exceptionUtils.createTokenExpiredException(refreshToken);
         }
+    }
+
+    @Override
+    public void invalidateRefreshToken(String token) {
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
+                .orElseThrow(() -> exceptionUtils.createResourceNotFoundException("RefreshToken", "token", token));
+
+        refreshTokenRepository.delete(refreshToken);
     }
 }

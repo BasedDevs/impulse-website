@@ -78,17 +78,20 @@ public class JwtUtils {
         } catch (ExpiredJwtException ex) {
             // Log the exception message or do something specific for expired tokens
             LOGGER.error(ex.getMessage());
+            throw new JwtException("JWT token is expired.");
         } catch (SignatureException ex) {
             // Log the exception message or do something specific for signature validation failures
             LOGGER.error(ex.getMessage());
+            throw new JwtException("Invalid JWT signature.");
         } catch (MalformedJwtException ex) {
             // Log the exception message or do something specific for malformed tokens
             LOGGER.error(ex.getMessage());
+            throw new JwtException("Malformed JWT token.");
         } catch (JwtException ex) {
             // Catch all other JwtException types
             LOGGER.error(ex.getMessage());
+            throw new JwtException("Invalid JWT token.");
         }
-        return false;
     }
 
     private SecretKey getSigningKey() {

@@ -6,4 +6,5 @@ public interface AuthService {
 
     ConfirmedAccountResponseDTO confirmUserAccount(String confirmationToken);
 
+    void logout(String refreshToken);
 }

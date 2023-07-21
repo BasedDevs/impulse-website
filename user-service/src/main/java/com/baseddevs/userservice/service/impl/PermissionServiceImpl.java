@@ -2,8 +2,7 @@ package com.baseddevs.userservice.service.impl;
 
 import com.baseddevs.userservice.dto.permission.PermissionCU;
 import com.baseddevs.userservice.dto.permission.PermissionDTO;
-import com.baseddevs.userservice.exception.PermissionNotFoundException;
-import com.baseddevs.userservice.exception.RoleAlreadyExistsException;
+import com.baseddevs.userservice.exception.utils.ExceptionUtils;
 import com.baseddevs.userservice.mapper.PermissionMapper;
 import com.baseddevs.userservice.model.Permission;
 import com.baseddevs.userservice.repository.PermissionRepository;
@@ -20,16 +19,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final PermissionRepository permissionRepository;
     private final PermissionMapper permissionMapper;
+    private final ExceptionUtils exceptionUtils;
 
     @Override
     public PermissionDTO createPermission(PermissionCU permissionCU) {
 
-        if (permissionRepository.existsByName(permissionCU.name())) {
-            throw new RoleAlreadyExistsException("Permission " + permissionCU.name() + " already exists");
+        if (permissionRepository.existsByName(permissionCU.getName())) {
+            throw exceptionUtils.createResourceAlreadyExistsException("Permission", "name", permissionCU.getName());
         }
 
         Permission permission = new Permission();
-        permission.setName(permissionCU.name());
+        permission.setName(permissionCU.getName());
         permission = permissionRepository.save(permission);
 
         return permissionMapper.toDTO(permission);
@@ -46,15 +46,15 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public PermissionDTO getPermissionById(Long id) {
         Permission permission = permissionRepository.findById(id)
-                .orElseThrow(() -> new PermissionNotFoundException("Permission with id " + id + " not found"));
+                .orElseThrow(() -> exceptionUtils.createResourceNotFoundException("Permission", "id", id.toString()));
         return permissionMapper.toDTO(permission);
     }
 
     @Override
     public PermissionDTO updatePermission(Long id, PermissionCU permissionCU) {
         Permission permission = permissionRepository.findById(id)
-                .orElseThrow(() -> new PermissionNotFoundException("Permission with id " + id + " not found"));
-        permission.setName(permissionCU.name());
+                .orElseThrow(() -> exceptionUtils.createResourceNotFoundException("Permission", "id", id.toString()));
+        permission.setName(permissionCU.getName());
         Permission updatedPermission = permissionRepository.save(permission);
         return permissionMapper.toDTO(updatedPermission);
     }
@@ -62,7 +62,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void deletePermission(Long id) {
         Permission permission = permissionRepository.findById(id)
-                .orElseThrow(() -> new PermissionNotFoundException("Permission with id " + id + " not found"));
+                .orElseThrow(() -> exceptionUtils.createResourceNotFoundException("Permission", "id", id.toString()));
         permissionRepository.delete(permission);
     }
 }
