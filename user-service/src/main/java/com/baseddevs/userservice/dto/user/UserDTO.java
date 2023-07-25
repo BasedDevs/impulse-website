@@ -19,4 +19,5 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private Set<RoleDTO> roles;
+    private Set<AddressDTO> addresses;
 }

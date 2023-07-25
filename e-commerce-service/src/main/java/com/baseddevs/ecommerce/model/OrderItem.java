@@ -1,4 +1,4 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -37,4 +37,7 @@ public class OrderItem {
     @NotNull(message = "Price cannot be null")
     @Column(name = "price")
     private BigDecimal price;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 }

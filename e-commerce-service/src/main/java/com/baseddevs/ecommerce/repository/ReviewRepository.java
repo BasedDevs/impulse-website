@@ -1,8 +1,7 @@
-package com.baseddevs.repository;
+package com.baseddevs.ecommerce.repository;
 
-import com.baseddevs.model.Review;
+import com.baseddevs.ecommerce.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ReviewRepository extends JpaRepository<Review, Long>, JpaSpecificationExecutor<Review> {
+public interface ReviewRepository extends JpaRepository<Review, Long> {
 }

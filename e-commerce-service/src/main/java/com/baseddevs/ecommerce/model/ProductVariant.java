@@ -1,4 +1,4 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,5 +34,8 @@ public class ProductVariant {
     @Size(max=50, message = "Color must be maximum 50 characters")
     @Column(name = "color")
     public String color;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
 }

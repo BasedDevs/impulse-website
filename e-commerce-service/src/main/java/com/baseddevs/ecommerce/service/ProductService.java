@@ -1,20 +1,7 @@
-package com.baseddevs.service;
+package com.baseddevs.ecommerce.service;
 
-import com.baseddevs.dto.ProductCreateDTO;
-import com.baseddevs.dto.ProductDTO;
-import com.baseddevs.dto.ProductUpdateDTO;
-
-import java.util.List;
+import com.baseddevs.ecommerce.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductService {
-
-    List<ProductDTO> getAllProducts();
-
-    ProductDTO getProductById(Long productId);
-
-    ProductDTO createProduct(ProductCreateDTO product);
-
-    ProductDTO updateProduct(Long productId, ProductUpdateDTO product);
-
-    void deleteProduct(Long productId);
 }

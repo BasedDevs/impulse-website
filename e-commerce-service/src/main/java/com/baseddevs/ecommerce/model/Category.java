@@ -1,4 +1,4 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,5 +25,8 @@ public class Category {
     @Size(min=1, max=100, message = "Category name must be between 1 and 100 characters")
     @Column(name = "name")
     private String name;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
 }

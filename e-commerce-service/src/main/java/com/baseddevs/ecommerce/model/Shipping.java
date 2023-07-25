@@ -1,5 +1,6 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
+import com.baseddevs.ecommerce.model.enums.ShippingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "shippings")
@@ -26,17 +27,23 @@ public class Shipping {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(name = "address_id")
+    private Long addressId;
 
     @NotBlank(message = "Shipping method cannot be blank/null")
     @Column(name = "shipping_method")
     private String shippingMethod;
 
     @Column(name = "shipping_date")
-    private Date shippingDate;
+    private Instant shippingDate;
 
     @Column(name = "delivery_date")
-    private Date deliveryDate;
+    private Instant deliveryDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ShippingStatus status;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 }

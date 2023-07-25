@@ -1,21 +1,7 @@
-package com.baseddevs.service;
+package com.baseddevs.ecommerce.service;
 
-import com.baseddevs.dto.CategoryCreateDTO;
-import com.baseddevs.dto.CategoryDTO;
-import com.baseddevs.dto.CategoryUpdateDTO;
-
-import java.util.List;
+import com.baseddevs.ecommerce.model.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryService {
-
-    List<CategoryDTO> getAllCategories();
-
-    CategoryDTO getCategoryById(Long categoryId);
-
-    CategoryDTO createCategory(CategoryCreateDTO categoryCreateDTO);
-
-    CategoryDTO updateCategoryById(Long categoryId, CategoryUpdateDTO categoryUpdateDTO);
-
-    void deleteCategoryById(Long categoryId);
 }
-

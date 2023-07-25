@@ -1,14 +1,7 @@
-package com.baseddevs.service;
+package com.baseddevs.ecommerce.service;
 
-import com.baseddevs.dto.ReviewCreateDTO;
-import com.baseddevs.dto.ReviewDTO;
-
-import java.util.List;
+import com.baseddevs.ecommerce.model.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewService {
-
-    List<ReviewDTO> getAllReviewsForProduct(Long productId);
-
-    ReviewDTO addReviewForProduct(Long productId, ReviewCreateDTO reviewDto);
-
 }

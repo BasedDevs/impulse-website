@@ -55,6 +55,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<UserRole> userRoles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<Address> addresses = new HashSet<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<RefreshToken> refreshTokens;
 

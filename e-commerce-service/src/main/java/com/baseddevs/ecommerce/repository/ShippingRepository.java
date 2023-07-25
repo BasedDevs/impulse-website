@@ -1,8 +1,7 @@
-package com.baseddevs.repository;
+package com.baseddevs.ecommerce.repository;
 
-import com.baseddevs.model.Shipping;
+import com.baseddevs.ecommerce.model.Shipping;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ShippingRepository extends JpaRepository<Shipping, Long>, JpaSpecificationExecutor<Shipping> {
+public interface ShippingRepository extends JpaRepository<Shipping, Long> {
 }
