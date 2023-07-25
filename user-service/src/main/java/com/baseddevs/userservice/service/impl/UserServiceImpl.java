@@ -19,6 +19,7 @@ import com.baseddevs.userservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -109,6 +110,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public UserDTO findByUsername(String username) {
         return userMapper.toDTO(userRepository.findByUsername(username).orElseThrow(() ->
