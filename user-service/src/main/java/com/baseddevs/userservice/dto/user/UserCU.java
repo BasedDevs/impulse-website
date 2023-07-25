@@ -1,6 +1,7 @@
 package com.baseddevs.userservice.dto.user;
 
 import com.baseddevs.userservice.dto.role.RoleDTO;
+import com.baseddevs.userservice.model.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -34,4 +35,6 @@ public class UserCU {
     private String lastName;
 
     private Set<RoleDTO> roles;
+
+    private Set<AddressDTO> addresses;
 }

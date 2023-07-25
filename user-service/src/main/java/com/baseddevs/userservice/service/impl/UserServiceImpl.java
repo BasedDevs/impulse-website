@@ -8,9 +8,11 @@ import com.baseddevs.userservice.dto.user.UserUpdatePasswordDTO;
 import com.baseddevs.userservice.exception.utils.ExceptionUtils;
 import com.baseddevs.userservice.mapper.UserMapper;
 import com.baseddevs.userservice.mapper.UserRoleMapper;
+import com.baseddevs.userservice.model.Address;
 import com.baseddevs.userservice.model.Role;
 import com.baseddevs.userservice.model.User;
 import com.baseddevs.userservice.model.UserRole;
+import com.baseddevs.userservice.repository.AddressRepository;
 import com.baseddevs.userservice.repository.RoleRepository;
 import com.baseddevs.userservice.repository.UserRepository;
 import com.baseddevs.userservice.repository.UserRoleRepository;
@@ -43,6 +45,8 @@ public class UserServiceImpl implements UserService {
 
     private final ExceptionUtils exceptionUtils;
 
+    private final AddressRepository addressRepository;
+
     @Override
     public UserDTO createUser(UserCU userCU) {
         // Check if the username is already taken
@@ -64,12 +68,24 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userCU.getFirstName());
         user.setLastName(userCU.getLastName());
 
-        // Generate a confirmation token
-        user.setConfirmationToken(UUID.randomUUID().toString());
+        // Addresses
+        Set<Address> addresses = userCU.getAddresses().stream().map(addressDTO -> {
+            Address address = new Address();
+            address.setCity(addressDTO.getCity());
+            address.setStreet(addressDTO.getStreet());
+            address.setZipCode(addressDTO.getZipCode());
+            address.setCountry(addressDTO.getCountry());
+            address.setState(addressDTO.getState());
+            return address;
+        }).collect(Collectors.toSet());
 
         User savedUser = userRepository.save(user);
         Set<UserRole> userRoles = getUserRoles(savedUser, userCU.getRoles());
+        savedUser.setAddresses(addresses);
         savedUser.setUserRoles(userRoles);
+
+        // Generate a confirmation token
+        user.setConfirmationToken(UUID.randomUUID().toString());
 
         // Send a confirmation email
         emailService.sendConfirmationEmail(savedUser);

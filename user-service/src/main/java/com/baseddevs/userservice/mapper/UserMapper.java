@@ -1,6 +1,7 @@
 package com.baseddevs.userservice.mapper;
 
 import com.baseddevs.userservice.dto.role.RoleDTO;
+import com.baseddevs.userservice.dto.user.AddressDTO;
 import com.baseddevs.userservice.dto.user.UserDTO;
 import com.baseddevs.userservice.model.User;
 import com.baseddevs.userservice.model.UserRole;
@@ -17,12 +18,16 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     private final RoleMapper roleMapper;
+    private final AddressMapper addressMapper;
 
     public UserDTO toDTO(User user) {
         Set<RoleDTO> roles = user.getUserRoles().stream()
                 .map(userRole -> roleMapper.toDTO(userRole.getRole()))
                 .collect(Collectors.toSet());
-        return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFirstName(), user.getLastName(), roles);
+        Set<AddressDTO> addresses = user.getAddresses().stream()
+                .map(address -> addressMapper.toDTO(address))
+                .collect(Collectors.toSet());
+        return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFirstName(), user.getLastName(), roles, addresses);
     }
 
     public UserAuthDetails mapToUserAuthDetails(User user) {
