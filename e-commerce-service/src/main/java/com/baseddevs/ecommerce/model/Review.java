@@ -1,4 +1,4 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "reviews")
@@ -30,9 +30,8 @@ public class Review {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Min(1)
     @Max(5)
@@ -45,6 +44,9 @@ public class Review {
 
     @NotNull(message = "Review date cannot be null")
     @Column(name = "review_date")
-    private Date reviewDate;
+    private Instant reviewDate;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
 }

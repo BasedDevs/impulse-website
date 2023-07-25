@@ -1,5 +1,6 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
+import com.baseddevs.ecommerce.model.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -26,8 +27,8 @@ public class Product {
     private Category category;
 
     @NotNull(message = "Gender cannot be null")
-    @ManyToOne
-    @JoinColumn(name = "gender_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
     private Gender gender;
 
     @NotBlank(message = "Product name cannot be blank/null")
@@ -45,16 +46,7 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
-    /*
-    @Builder
-    public static Product create(Category category, Gender gender, String name, String description, BigDecimal price) {
-        Product product = new Product();
-        product.category = category;
-        product.gender = gender;
-        product.name = name;
-        product.description = description;
-        product.price = price;
-        return product;
-    }
-*/
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
 }

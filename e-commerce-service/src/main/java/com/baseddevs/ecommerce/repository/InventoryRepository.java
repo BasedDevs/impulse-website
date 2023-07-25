@@ -1,8 +1,7 @@
-package com.baseddevs.repository;
+package com.baseddevs.ecommerce.repository;
 
-import com.baseddevs.model.Inventory;
+import com.baseddevs.ecommerce.model.Inventory;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface InventoryRepository extends JpaRepository<Inventory, Long>, JpaSpecificationExecutor<Inventory> {
+public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 }

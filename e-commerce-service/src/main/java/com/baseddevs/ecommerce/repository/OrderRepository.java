@@ -1,8 +1,7 @@
-package com.baseddevs.repository;
+package com.baseddevs.ecommerce.repository;
 
-import com.baseddevs.model.Order;
+import com.baseddevs.ecommerce.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

@@ -1,0 +1,52 @@
+2023-07-25T18:56:11.862+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:11.862[0;39m [36mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m [32mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[0;39m 17840 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-07-25T18:56:11.863+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:11.863[0;39m [36mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m [32mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[0;39m 17840 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-07-25T18:56:12.592+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:12.592[0;39m [36mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m [32mBootstrapping Spring Data JPA repositories in DEFAULT mode.
+[0;39m 17840 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-07-25T18:56:12.724+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:12.724[0;39m [36mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m [32mFinished Spring Data repository scanning in 125 ms. Found 9 JPA repository interfaces.
+[0;39m 17840 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 125 ms. Found 9 JPA repository interfaces.
+2023-07-25T18:56:12.938+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:12.938[0;39m [36mo.s.cloud.context.scope.GenericScope[0;39m [32mBeanFactory id=bde42b1d-2329-31cd-a466-516926add084
+[0;39m 17840 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=bde42b1d-2329-31cd-a466-516926add084
+2023-07-25T18:56:13.354+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:13.354[0;39m [36mo.s.b.w.e.tomcat.TomcatWebServer[0;39m [32mTomcat initialized with port(s): 8082 (http)
+[0;39m 17840 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8082 (http)
+2023-07-25T18:56:13.407+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:13.407[0;39m [36mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m [32mRoot WebApplicationContext: initialization completed in 1543 ms
+[0;39m 17840 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1543 ms
+2023-07-25T18:56:13.651+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:13.651[0;39m [36mo.s.b.a.h.H2ConsoleAutoConfiguration[0;39m [32mH2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:test'
+[0;39m 17840 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:test'
+2023-07-25T18:56:14.051+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:14.051[0;39m [36mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m [32mNo LoadTimeWeaver setup: ignoring JPA class transformer
+[0;39m 17840 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-07-25T18:56:14.809+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:14.809[0;39m [36mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m [32mInitialized JPA EntityManagerFactory for persistence unit 'default'
+[0;39m 17840 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-07-25T18:56:14.859+02:00 [33m WARN[0;39m [2m2023-07-25 18:56:14.859[0;39m [36mo.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration[0;39m [33mspring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[0;39m 17840 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-07-25T18:56:14.877+02:00 [33m WARN[0;39m [2m2023-07-25 18:56:14.877[0;39m [36mo.s.b.a.s.s.UserDetailsServiceAutoConfiguration[0;39m [33m
+
+Using generated security password: f22ee2a4-cc8b-4077-82de-433f7663c21e
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[0;39m 17840 --- [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f22ee2a4-cc8b-4077-82de-433f7663c21e
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2023-07-25T18:56:14.952+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:14.952[0;39m [36mo.s.s.web.DefaultSecurityFilterChain[0;39m [32mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1e323616, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@770749f9, org.springframework.security.web.context.SecurityContextHolderFilter@59063de4, org.springframework.security.web.header.HeaderWriterFilter@692fbc30, org.springframework.security.web.authentication.logout.LogoutFilter@5e6e530d, com.baseddevs.ecommerce.security.filter.ExceptionHandlingFilter@1c29ba85, com.baseddevs.ecommerce.security.filter.JWTAuthorizationFilter@39805ecd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2d8a6eb5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2ff1edef, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@368d4d6d, org.springframework.security.web.session.SessionManagementFilter@419c1e36, org.springframework.security.web.access.ExceptionTranslationFilter@7a9536d0, org.springframework.security.web.access.intercept.AuthorizationFilter@2e98e889]
+[0;39m 17840 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1e323616, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@770749f9, org.springframework.security.web.context.SecurityContextHolderFilter@59063de4, org.springframework.security.web.header.HeaderWriterFilter@692fbc30, org.springframework.security.web.authentication.logout.LogoutFilter@5e6e530d, com.baseddevs.ecommerce.security.filter.ExceptionHandlingFilter@1c29ba85, com.baseddevs.ecommerce.security.filter.JWTAuthorizationFilter@39805ecd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2d8a6eb5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2ff1edef, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@368d4d6d, org.springframework.security.web.session.SessionManagementFilter@419c1e36, org.springframework.security.web.access.ExceptionTranslationFilter@7a9536d0, org.springframework.security.web.access.intercept.AuthorizationFilter@2e98e889]
+2023-07-25T18:56:15.644+02:00 [33m WARN[0;39m [2m2023-07-25 18:56:15.644[0;39m [36mo.s.b.d.a.OptionalLiveReloadServer[0;39m [33mUnable to start LiveReload server
+[0;39m 17840 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2023-07-25T18:56:15.677+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:15.677[0;39m [36mo.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration[0;39m [32mEureka HTTP Client uses RestTemplate.
+[0;39m 17840 --- [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2023-07-25T18:56:15.708+02:00 [33m WARN[0;39m [2m2023-07-25 18:56:15.708[0;39m [36mo.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger[0;39m [33mSpring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[0;39m 17840 --- [restartedMain] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2023-07-25T18:56:15.711+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:15.711[0;39m [36mo.s.b.a.e.web.EndpointLinksResolver[0;39m [32mExposing 1 endpoint(s) beneath base path '/actuator'
+[0;39m 17840 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-07-25T18:56:15.781+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:15.781[0;39m [36mo.s.c.n.eureka.InstanceInfoFactory[0;39m [32mSetting initial instance status as: STARTING
+[0;39m 17840 --- [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2023-07-25T18:56:16.088+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:16.088[0;39m [36mo.s.c.n.e.s.EurekaServiceRegistry[0;39m [32mRegistering application USER-SERVICE with eureka with status UP
+[0;39m 17840 --- [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application USER-SERVICE with eureka with status UP
+2023-07-25T18:56:16.107+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:16.107[0;39m [36mo.s.b.w.e.tomcat.TomcatWebServer[0;39m [32mTomcat started on port(s): 8082 (http) with context path ''
+[0;39m 17840 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8082 (http) with context path ''
+2023-07-25T18:56:16.108+02:00 [32m INFO[0;39m [2m2023-07-25 18:56:16.108[0;39m [36mo.s.c.n.e.s.EurekaAutoServiceRegistration[0;39m [32mUpdating port to 8082
+[0;39m 17840 --- [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082

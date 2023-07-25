@@ -1,20 +1,7 @@
-package com.baseddevs.service;
+package com.baseddevs.ecommerce.service;
 
-import com.baseddevs.dto.ProductVariantCreateDTO;
-import com.baseddevs.dto.ProductVariantDTO;
-import com.baseddevs.dto.ProductVariantUpdateDTO;
-
-import java.util.List;
+import com.baseddevs.ecommerce.model.ProductVariant;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductVariantService {
-
-    List<ProductVariantDTO> getAllVariantsForProduct(Long productId);
-
-    ProductVariantDTO getVariantForProduct(Long productId, Long variantId);
-
-    ProductVariantDTO createVariantForProduct(Long productId, ProductVariantCreateDTO productVariant);
-
-    ProductVariantDTO updateVariantForProduct(Long productId, Long variantId, ProductVariantUpdateDTO productVariant);
-
-    void deleteVariantForProduct(Long productId, Long variantId);
 }

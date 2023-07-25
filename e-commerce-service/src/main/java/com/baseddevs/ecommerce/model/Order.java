@@ -1,5 +1,6 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
+import com.baseddevs.ecommerce.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "orders")
@@ -23,19 +24,25 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "promo_code_id")
     private PromoCode promoCode;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    private Instant orderDate;
 
     @NotNull(message = "Total amount cannot be null")
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private OrderStatus status;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
 }

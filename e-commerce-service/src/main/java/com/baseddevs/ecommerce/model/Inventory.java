@@ -1,7 +1,8 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +31,9 @@ public class Inventory {
     @Min(value = 0, message = "The value must be positive or zero")
     @Column(name = "quantity")
     private Integer quantity;
+
+    @NotBlank(message = "SKU cannot be blank")
+    @Column(name = "sku")
+    private String sku;
 
 }

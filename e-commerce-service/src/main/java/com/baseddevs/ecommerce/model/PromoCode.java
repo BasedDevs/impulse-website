@@ -1,4 +1,4 @@
-package com.baseddevs.model;
+package com.baseddevs.ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "promo_codes")
@@ -33,8 +33,11 @@ public class PromoCode {
     private BigDecimal discount;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private Instant startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private Instant endDate;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 }
