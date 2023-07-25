@@ -20,14 +20,14 @@ public class PasswordResetToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "token")
+    @Column(name = "token", nullable = false)
     private String token;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "expiry_date")
+    @Column(name = "expiry_date", nullable = false)
     private Instant expiryDate;
 
 }

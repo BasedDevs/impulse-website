@@ -23,7 +23,7 @@ public class Permission {
 
     @NotBlank(message = "Permission name cannot be blank/null")
     @Size(min=1, max=100, message = "Permission name must be between 1 and 100 characters")
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
 }

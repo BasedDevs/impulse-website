@@ -26,8 +26,8 @@ public class Role {
     private Long id;
 
     @NotBlank(message = "Role name cannot be blank/null")
-    @Size(min=1, max=100, message = "Role name must be between 1 and 100 characters")
-    @Column(name = "name")
+    @Size(min = 1, max = 100, message = "Role name must be between 1 and 100 characters")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @JsonManagedReference
