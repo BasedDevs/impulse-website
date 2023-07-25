@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
             address.setZipCode(addressDTO.getZipCode());
             address.setCountry(addressDTO.getCountry());
             address.setState(addressDTO.getState());
+            addressRepository.save(address);
             return address;
         }).collect(Collectors.toSet());
 
